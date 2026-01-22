@@ -34,6 +34,13 @@ async def run(client, message, args):
             commit_message = " ".join(args[1:]) if len(args) > 1 else None
             full_path = os.path.join(REPO_DIR, file_path)
 
+            try:
+                subprocess.run(["git", "pull"], cwd=REPO_DIR, check=True)
+            except subprocess.CalledProcessError as e:
+                await message.channel.send(f"Failed to pull latest changes:\n```{e}```")
+                return
+            
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
             await attachment.save(full_path)
 
         elif ref.content.strip():
@@ -46,6 +53,12 @@ async def run(client, message, args):
             file_path = args[0]
             commit_message = " ".join(args[1:]) if len(args) > 1 else None
             full_path = os.path.join(REPO_DIR, file_path)
+
+            try:
+                subprocess.run(["git", "pull"], cwd=REPO_DIR, check=True)
+            except subprocess.CalledProcessError as e:
+                await message.channel.send(f"Failed to pull latest changes!!!!:\n```{e}```")
+                return
 
             os.makedirs(os.path.dirname(full_path), exist_ok=True)
             with open(full_path, "w", encoding="utf-8") as f:
