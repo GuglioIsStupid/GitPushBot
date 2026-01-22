@@ -40,9 +40,6 @@ async def on_message(message):
 
     if not message.content.startswith(PREFIX):
         return
-    
-    if not str(message.author.id) == OWNER_ID:
-        return
 
     content = message.content[len(PREFIX):]
     parts = content.split()
